@@ -1,4 +1,4 @@
-
+//harry ge 
 public class DoubleChain {
 	
 	private DNode head;
