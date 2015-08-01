@@ -5,7 +5,16 @@ import static org.junit.Assert.*;
  */
 
 public class MisconceptionTests {
-
+	@Test
+    public void testPlace() {
+		Board b =new Board(true);
+		Piece shield = new Piece(true, b, 1, 1, "shield");
+		b.place(shield,1,1);
+		assertEquals(b.pieceAt(1,1),shield);
+		Piece pawn=new Piece(false,b,7,7,"pawn");
+		b.place(pawn,7,7);
+		assertEquals(b.pieceAt(7,7),pawn);
+	}
     @Test
     public void testCoreFunctionality() {
         System.out.println("Test 1: See comments in MisconceptionTests.java for description.");
