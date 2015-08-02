@@ -5,14 +5,14 @@
 public class Board {
 	/** Location of pieces. */
 	//private static boolean[][] pieces;//0 empty;1 Normal;2 shields 3 Bombs
-	private Piece[][] pieces;
+        private Piece[][] pieces;
 	private static int N;
 	private int numFirePieces;
 	private int numWaterPieces;
 	private boolean playerIsFire;
-	/** Draws an N x N board. Adapted from:
-        http://introcs.cs.princeton.edu/java/15inout/CheckerBoard.java.html
-	 */
+    private boolean pieceSelected;
+    private boolean isMoved;
+    private int selectX,selectY;
 
 	public Board(boolean shouldBeEmpty) {
 		N=8;
@@ -28,6 +28,8 @@ public class Board {
 			numWaterPieces=12;
 		}
 		playerIsFire=true;
+		selectX=-1;selectY=-1;
+		isMoved=false;pieceSelected=false;
 	}
 	private  void drawBoard() {
 		for (int i = 0; i < N; i++) {
@@ -35,8 +37,12 @@ public class Board {
 				if ((i + j) % 2 == 0) StdDrawPlus.setPenColor(StdDrawPlus.GRAY);
 				else                  StdDrawPlus.setPenColor(StdDrawPlus.RED);
 				StdDrawPlus.filledSquare(i + .5, j + .5, .5);
-				StdDrawPlus.setPenColor(StdDrawPlus.WHITE);                
+				
 			}
+		}
+		if(pieceSelected && selectX>=0 && selectX<8 && selectY<8 && selectY>=0){ 
+		    StdDrawPlus.setPenColor(StdDrawPlus.WHITE);                
+		    StdDrawPlus.filledSquare(selectX+.5,selectY+.5,.5);
 		}
 	}
 	
@@ -48,23 +54,22 @@ public class Board {
 				{				
 						switch(j) {
 						case 0:
-							pieces[i][j]=new Piece(true,this,i,j,"pawn");pieces[i][j].print();
+                                                        pieces[i][j]=new Piece(true,this,i,j,"pawn");
 							break;
 						case 1:
-							pieces[i][j]=new Piece(true,this,i,j,"shield");pieces[i][j].print();
+                                                        pieces[i][j]=new Piece(true,this,i,j,"shield");
 							break;
 						case 2:
-							pieces[i][j]=new Piece(true,this,i,j,"bomb");pieces[i][j].print();
+                                                        pieces[i][j]=new Piece(true,this,i,j,"bomb");
 							break;
 						case 5:
-							pieces[i][j]=new Piece(false,this,i,j,"bomb");pieces[i][j].print();
+                                                        pieces[i][j]=new Piece(false,this,i,j,"bomb");
 							break;
 						case 6:
-							pieces[i][j]=new Piece(false,this,i,j,"shield");pieces[i][j].print();
+                                                        pieces[i][j]=new Piece(false,this,i,j,"shield");
 							break;
 						case 7:
-							pieces[i][j]=new Piece(false,this,i,j,"pawn");pieces[i][j].print();
-							//						System.out.println("case 7");
+                                                        pieces[i][j]=new Piece(false,this,i,j,"pawn");
 							break;
 						default: 
 							break;
@@ -78,7 +83,7 @@ public class Board {
 			for (int j = 0; j < N; j++) {
 				if((pieces[i][j])!=null)
 				{
-					(pieces[i][j]).print();
+                                        //(pieces[i][j]).print();
 					String picturePath=getPicPath(pieces[i][j]);
 					StdDrawPlus.picture(i + .5, j + .5, picturePath, 1, 1);
 				}
@@ -119,6 +124,7 @@ public class Board {
 			return;
 		else
 		{
+		    pieces[p.x][p.y]=null;//original place will have no piece
 			p.move(x,y);
 			pieces[x][y]=p;
 		}
@@ -126,11 +132,38 @@ public class Board {
 	}
 	public boolean canSelect(int x,int y)
 	{
-		return true;
+	    if(x<0||x>7||y>7||y<0)
+		return false;
+	    if((pieceSelected==false || isMoved==false)&& pieces[x][y]!=null)
+		return pieces[x][y].isFire()==playerIsFire;
+	    if(pieceSelected==true && isMoved==false  && (selectX-1==x || selectX+1==x) && pieces[x][y]==null)
+		if((playerIsFire && selectY+1==y) || (!playerIsFire && selectY-1==y))
+		    return true;
+	    if(pieceSelected==true && pieces[x][y]==null  && (selectX-2==x || selectX+2==x)){// wait for improvement
+		if((playerIsFire && selectY+2==y) || (!playerIsFire && selectY-2==y))
+		    return (pieces[(x+selectX)/2][(y+selectY)/2].isFire()!=playerIsFire);
+	    }
+		return false;
 	}
+
+
 	public void select(int x, int y) 
 	{
-		
+                if(canSelect(x,y))
+                {
+		    if(pieces[x][y]!=null){
+			/*	StdDrawPlus.setPenColor(StdDrawPlus.WHITE);                
+			StdDrawPlus.filledSquare(i + .5, j + .5, .5);
+			if(pieceSelected==false) */
+			selectX=x;selectY=y;
+			pieceSelected=true;
+		    }
+		    else {
+			place(pieces[selectX][selectY],x,y);
+			isMoved=true;
+		    }
+		}
+
 	}
 	public boolean canEndTurn() 
 	{
@@ -154,32 +187,26 @@ public class Board {
 		}
 	}
 	public static void main(String[] args) {
-
-
 		StdDrawPlus.setXscale(0, 8);
 		StdDrawPlus.setYscale(0, 8); 
 
 		Board bd=new Board(false);
 		
-		
-//		Piece [] ps=new Piece[3];
-//		ps[0]=new Piece(true,bd,0,0,"shield");
-//		ps[1]=new Piece(true,bd,1,1,"bomb");
-//		ps[2]=new Piece(true,bd,2,2,"pawn");				
-//		ps[0].print();
-//		ps[1].print();
-//		ps[2].print();
-		
-		
-		
-		
 		System.out.println();
 		bd.InitializePieces();
 		/** Monitors for mouse presses. Wherever the mouse is pressed,
             a new piece appears. */
-		bd.drawBoard();
-		bd.drawPieces();
-		while(true) {			
+
+                while(true) {
+
+                    if (StdDrawPlus.mousePressed()) {
+                                double x = StdDrawPlus.mouseX();
+                                double y = StdDrawPlus.mouseY();
+				bd.select((int) x,(int) y);
+                            }
+
+                            bd.drawBoard();
+                            bd.drawPieces();
 			StdDrawPlus.show(100);
 		}
 	}

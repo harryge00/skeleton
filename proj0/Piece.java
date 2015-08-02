@@ -1,37 +1,25 @@
 public class Piece {
-	private static boolean isFire;
-	private static Board b;
-	private static int x,y;
-	private static String type;
-	private static boolean Kinged;
-	public Piece (){
-		isFire=false;
-		b=null;
-		x=0;y=0;type="";Kinged=false;
-	}
-	public Piece(boolean isFire, Board b, int x, int y, String type)
-	{
-		this.isFire=isFire;
-		this.b=b;
-		this.x=x;
-		this.y=y;
-		this.type=type;
-		this.Kinged=false;
-	}
-	public void setPiece(boolean isFire, Board b, int x, int y, String type)
-	{
-		this.isFire=isFire;
-		this.b=b;
-		this.x=x;
-		this.y=y;
-		this.type=type;
-		this.Kinged=false;
-	}
+        public boolean isFire;
+        private Board b;
+        public int x,y;
+        public String type;
+        private boolean Kinged;
+
+        public Piece(boolean isF, Board bd, int x0, int y0, String str)
+        {
+                isFire=isF;
+                b=bd;
+                x=x0;
+                y=y0;
+                type=str;
+                Kinged=false;
+        }
+
 	
 	public void print(){
 		System.out.println(x+","+y+" "+type+" isFire? "+isFire);
 	}
-	public static boolean isFire(){
+        public boolean isFire(){
 		return isFire;
 	}
 	public int side(){
