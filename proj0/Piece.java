@@ -3,8 +3,8 @@ public class Piece {
         private Board b;
         public int x,y;
         public String type;
-        private boolean Kinged;
-
+        public boolean Kinged;
+//        private boolean hasCaptured;
         public Piece(boolean isF, Board bd, int x0, int y0, String str)
         {
                 isFire=isF;
@@ -13,6 +13,7 @@ public class Piece {
                 y=y0;
                 type=str;
                 Kinged=false;
+//                hasCaptured=false;
         }
 
 	
@@ -44,4 +45,12 @@ public class Piece {
 		x=a;
 		y=b;
 	}
+//	public boolean hasCaptured()
+//	{
+//		
+//	}
+//	public void doneCapturing(){
+//		if(hasCaptured()==false)
+//			hasCapture
+//	}
 }
