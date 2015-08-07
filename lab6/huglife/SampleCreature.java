@@ -21,7 +21,8 @@ import java.util.List;
  */
 public class SampleCreature extends Creature {
     /** red color. */
-    private int r = 155;
+    //now is experiment
+    private int r = 215;
     /** green color. */
     private int g = 61;
     /** blue color. */
@@ -88,6 +89,20 @@ public class SampleCreature extends Creature {
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
         List<Direction> empties = getNeighborsOfType(neighbors, "empty");
+        List<Direction> walls = getNeighborsOfType(neighbors,"impassible");
+        if(walls.size()==1){
+            switch(walls.get(0)){
+                case TOP:
+                    return new Action(Action.ActionType.REPLICATE);
+                case BOTTOM:
+                    return new Action(Action.ActionType.REPLICATE);
+                case LEFT:
+                    return new Action(Action.ActionType.DIE);
+                case RIGHT:
+                    return new Action(Action.ActionType.DIE);
+
+            }
+        }
         if (empties.size() == 1) {
             Direction moveDir = empties.get(0);
             return new Action(Action.ActionType.MOVE, moveDir);
