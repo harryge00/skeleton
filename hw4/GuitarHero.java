@@ -24,13 +24,15 @@ public class GuitarHero{
                   {
                        System.out.print(key+" ");
                        strings[i].pluck();
-                      sample = oldstr.sample()+strings[i].sample();
-                      strings[i].tic();
-                      oldstr=strings[i];
                   }
               }
-                      StdAudio.play(sample);
-                      oldstr.tic();
+              for(int j=0;j<strings.length;j++)
+              {
+                  sample+=strings[j].sample();
+                  strings[j].tic();
+              }
+              StdAudio.play(sample);
+              sample=0;
               // compute the superposition of samples
 
               // play the sample on standard audio
