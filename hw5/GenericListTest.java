@@ -30,6 +30,7 @@ public class GenericListTest {
         assertEquals("[9]", a.toString());
         a.insert(5);
         a.insert(7);
+        System.out.println(a.toString());
         assertEquals("[7, 5, 9]", a.toString());
     }
 
