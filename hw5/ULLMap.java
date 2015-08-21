@@ -5,11 +5,11 @@ import java.util.Iterator;
  *  Any key must appear at most once in the dictionary, but values may appear multiple
  *  times. Supports get(key), put(key, value), and contains(key) methods. The value
  *  associated to a key is the value in the last call to put with that key.
- *
+ *@author dapao
  *  For simplicity, you may assume that nobody ever inserts a null key or value
  *  into your map.
  */
-public class ULLMap<K,V> implements Map61B<K,V>,Iterable<K> { //FIX ME
+public class ULLMap<K, V> implements Map61B<K, V>, Iterable<K> { //FIX ME
     /** Keys and values are stored in a linked list of Entry objects.
       * This variable stores the first pair in this linked list. You may
       * point this at a sentinel node, or use it as a the actual front item
@@ -222,6 +222,15 @@ public class ULLMap<K,V> implements Map61B<K,V>,Iterable<K> { //FIX ME
     @Override
     public Set<K> keySet() { //FIX ME SO I COMPILE
         throw new UnsupportedOperationException();
+    }
+    public static <TV,TK> ULLMap<TV,TK> invert(ULLMap<TK,TV> originMap)
+    {
+        ULLMap<TV,TK> invertedMap=new ULLMap<TV,TK>();
+        for(TK key1:originMap)
+        {
+            invertedMap.put(originMap.get(key1),key1);
+        }
+        return invertedMap;
     }
 
 

@@ -14,6 +14,11 @@ public class ArrayList61BTest {
         L.add(10);
         assertTrue(L.contains(5));        
         assertFalse(L.contains(0));
+        assertEquals(L.get(0),(Integer) 5);
+        assertEquals(L.get(1),(Integer) 10);
+        assertEquals(L.size(),2);
+        L.add(15);
+        assertEquals(L.size(),3);
 
     }
 

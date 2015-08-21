@@ -27,7 +27,17 @@ public class ULLMapTest2 {
         um.remove("Gracias");
         assertEquals(0, um.size());
    }
+public void testInvert(){
+        ULLMap<Integer, String> um = new ULLMap<Integer, String>();
+        um.put(0, "zero");
+        um.put(1, "one");
+        um.put(0, "two");
 
+        Map61B<String, Integer> result = ULLMap.invert(um);
+        assertEquals(2, result.size(), 1e11);
+        assertEquals(0, result.get("two"), 1e11);
+        assertEquals(1, result.get("one"), 1e11);
+}
     /*
     //@Test
     public void testIterator() {
@@ -40,17 +50,7 @@ public class ULLMapTest2 {
     }
     
     //@Test
-    public void testInvert(){
-        ULLMap<Integer, String> um = new ULLMap<Integer, String>();
-        um.put(0, "zero");
-        um.put(1, "one");
-        um.put(0, "two");
-
-        Map61B<String, Integer> result = ULLMap.invert(um); 
-        assertEquals(2, result.size(), 1e11);
-        assertEquals(0, result.get("two"), 1e11);
-        assertEquals(1, result.get("one"), 1e11);   	
-    }*/
+        }*/
     @Test
     public void testBasic2() {
         ULLMap<String, String> um = new ULLMap<String, String>();
