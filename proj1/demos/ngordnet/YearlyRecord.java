@@ -66,6 +66,16 @@ public class YearlyRecord {
       * No two words should have the same rank.
       */
     public int rank(String word) {
-        return 1;
+        ValueComparator vc=new ValueComparator(countMap);
+        TreeMap<String,Integer> sortedMap=new TreeMap<String,Integer> (vc);
+        sortedMap.putAll(countMap);
+        int i=0;
+        for(String str : sortedMap.keySet())
+        {
+            if(str==word)
+                return sortedMap.size()-i;
+            i++;
+        }
+        return -1;
     }
 } 
